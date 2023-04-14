@@ -1,6 +1,17 @@
 import React from "react";
+import { Inter } from "next/font/google";
+import { NextFont } from "next/dist/compiled/@next/font";
+import { Metadata } from "next";
 
-export const metadata = {
+import "./globals.css";
+
+const inter: NextFont = Inter({
+  weight: ["200", "300", "400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const metadata: Metadata = {
   title: "TransCargo App",
   description: "É rapido? É TransCargo!",
   icons: {
@@ -15,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.className}>
       <body>{children}</body>
     </html>
   );
