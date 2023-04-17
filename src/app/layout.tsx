@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import { NextFont } from "next/dist/compiled/@next/font";
 import { Metadata } from "next";
 
-import "./globals.css";
+import "@fontsource/inter";
+
+import UIThemeProvider from "@/app/components/UIThemeProvider";
 
 const inter: NextFont = Inter({
   weight: ["200", "300", "400", "500", "700"],
@@ -27,7 +29,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className}>
-      <body>{children}</body>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+
+      <body>
+        <UIThemeProvider>{children}</UIThemeProvider>
+      </body>
     </html>
   );
 }
