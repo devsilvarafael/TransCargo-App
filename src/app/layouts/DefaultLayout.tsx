@@ -8,7 +8,6 @@ import {
   ListItemText,
   ListItemIcon,
   Paper,
-  Divider,
   Box,
   Avatar,
   Stack,

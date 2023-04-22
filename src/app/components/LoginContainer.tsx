@@ -2,7 +2,6 @@
 
 import { ReactNode } from "react";
 import { Box } from "@mui/material";
-import Image from "next/image";
 
 export default function LoginContainer({ children }: { children: ReactNode }) {
   return (
