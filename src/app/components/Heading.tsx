@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
+// jsx-props-no-spreading is disabled in this file because the props needs to have the default props by Typo
+
 "use client";
 
 import { Typography, TypographyProps } from "@mui/material";
@@ -10,5 +13,9 @@ interface HeadingProps extends TypographyProps {
 export default function Heading({ children, ...props }: HeadingProps) {
   const { variant } = props;
 
-  return <Typography variant={variant}>{children}</Typography>;
+  return (
+    <Typography variant={variant} {...props}>
+      {children}
+    </Typography>
+  );
 }
