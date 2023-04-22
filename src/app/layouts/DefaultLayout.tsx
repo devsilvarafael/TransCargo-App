@@ -19,14 +19,10 @@ import TruckIcon from "@/app/assets/truck-icon.svg";
 import ManagementIcon from "@/app/assets/gerenciar-icon.svg";
 import SettingsIcon from "@/app/assets/settings-icon.svg";
 
-type SideBar = {
-  active: false | boolean;
-};
-
 interface DefaultLayoutProps {
   children: ReactNode;
-  leftSideBar: SideBar;
-  rightSideBar: SideBar;
+  leftSideBar?: boolean;
+  rightSideBar?: boolean;
 }
 
 const leftSideBarOptions = [
@@ -72,7 +68,7 @@ export default function DefaultLayout({
 
             <Divider flexItem sx={{ marginTop: 2 }} />
 
-            <List sx={{ width: "100%" }}>
+            <List>
               {leftSideBarOptions.map((item) => (
                 <ListItem key={item.id} disableGutters>
                   <ListItemButton>
