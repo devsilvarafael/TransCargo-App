@@ -1,3 +1,5 @@
+/* eslint-disable react/require-default-props */
+
 "use client";
 
 import {
@@ -20,7 +22,7 @@ import Image from "next/image";
 import DashboardIcon from "@/app/assets/dashboard-icon.svg";
 import TruckIcon from "@/app/assets/truck-icon.svg";
 import ManagementIcon from "@/app/assets/gerenciar-icon.svg";
-import SettingsIcon from "@/app/assets/settings-icon.svg";
+
 import styled from "@emotion/styled";
 
 interface DefaultLayoutProps {
@@ -62,7 +64,6 @@ const leftSideBarOptions = [
   { id: 0, label: "Dashboard", icon: DashboardIcon },
   { id: 1, label: "Rotas", icon: TruckIcon },
   { id: 2, label: "Gerênciar", icon: ManagementIcon },
-  { id: 3, label: "Settings", icon: SettingsIcon },
 ];
 
 export default function DefaultLayout({
@@ -70,7 +71,7 @@ export default function DefaultLayout({
   leftSideBar,
   rightSideBar,
   disableGutters,
-}: DefaultLayoutProps) {
+}: DefaultLayoutProps): JSX.Element {
   return (
     <Paper
       sx={{
@@ -86,13 +87,14 @@ export default function DefaultLayout({
           variant="permanent"
           anchor="left"
           sx={{
-            width: 200,
+            width: 220,
             flexShrink: 1,
             "& .MuiDrawer-paper": {
               width: "auto",
               boxSizing: "border-box",
               border: "none",
               boxShadow: 3,
+              padding: 2,
             },
             mr: disableGutters ? 0 : 4,
           }}
@@ -111,6 +113,8 @@ export default function DefaultLayout({
                 height: "100%",
                 display: "flex",
                 flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
               }}
             >
               <Image
@@ -122,7 +126,7 @@ export default function DefaultLayout({
 
               <List>
                 {leftSideBarOptions.map((item) => (
-                  <ListItem key={item.id} disableGutters alignItems="center">
+                  <ListItem key={item.id} alignItems="center">
                     <ListItemButton alignItems="center">
                       <ListItemIcon>
                         <Image
@@ -152,7 +156,7 @@ export default function DefaultLayout({
                 variant="dot"
               >
                 <Avatar
-                  src="https://picsum.photos/id/237/200/300"
+                  src="https://randomuser.me/api/portraits/men/42.jpg"
                   alt="username"
                 />
               </StyledBadge>
@@ -195,11 +199,3 @@ export default function DefaultLayout({
     </Paper>
   );
 }
-
-// Fix eslint error: required default props
-
-DefaultLayout.defaultProps = {
-  leftSideBar: false,
-  rightSideBar: false,
-  disableGutters: false,
-};

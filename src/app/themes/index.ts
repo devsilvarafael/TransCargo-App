@@ -10,7 +10,7 @@ const theme: Theme = createTheme({
     secondary: {
       main: "#C3CCD6",
       light: "#28CA9E",
-      dark: "#BCC4FB",
+      dark: "#8593A3",
     },
     error: {
       main: "#F35625",
@@ -20,13 +20,6 @@ const theme: Theme = createTheme({
     },
     background: {
       default: "#F4F7FA",
-    },
-  },
-  typography: {
-    fontFamily: "Inter",
-    h2: {
-      fontWeight: "bold",
-      fontSize: 34,
     },
   },
 });

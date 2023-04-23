@@ -5,6 +5,8 @@ import { Metadata } from "next";
 
 import "@fontsource/inter";
 
+import "@/app/styles/globals.css";
+
 import UIThemeProvider from "@/app/components/UIThemeProvider";
 
 const inter: NextFont = Inter({
@@ -29,11 +31,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className}>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap"
-        rel="stylesheet"
-      />
-
       <body>
         <UIThemeProvider>{children}</UIThemeProvider>
       </body>
