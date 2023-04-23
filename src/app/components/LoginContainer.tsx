@@ -16,7 +16,6 @@ export default function LoginContainer({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-      <img src="@/app/assets/waves-vector.svg" alt="waves" />
     </Box>
   );
 }

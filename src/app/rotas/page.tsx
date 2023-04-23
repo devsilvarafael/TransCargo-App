@@ -5,13 +5,7 @@
 import React from "react";
 import DefaultLayout from "@/app/layouts/DefaultLayout";
 
-import {
-  Box,
-  Card,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
 import CardRoute from "../components/CardRoute";
@@ -54,9 +48,7 @@ export default function Dashboard(): JSX.Element {
           <CardRoute />
         </Box>
 
-        <Box>
-          map
-        </Box>
+        <Box>map</Box>
       </Box>
     </DefaultLayout>
   );
