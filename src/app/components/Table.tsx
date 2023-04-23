@@ -6,61 +6,42 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { IBasicTableProps, TableItem } from "../interfaces/Table";
 import TableActions from "./TableActions";
 
-function createData(
-  name: string,
-  usuario: string,
-  nomeUsuario: string,
-  acao: React.ReactNode
-) {
-  return { name, usuario, nomeUsuario, acao };
-}
+export default function BasicTable({ headers, items }: IBasicTableProps) {
+  const tableItems: TableItem[] = items.map((item) => {
+    const tableItem: TableItem = { id: item.id };
+    Object.entries(item).forEach(([key, value]) => {
+      if (key !== "id") {
+        tableItem[key] = value;
+      }
+    });
+    return tableItem;
+  });
 
-const rows = [
-  createData("ADM", "rafael@dev", "Rafael Silva", <TableActions />),
-  createData(
-    "MOTORISTA",
-    "valdemort@potter",
-    "Voldemort Pereira",
-    <TableActions />
-  ),
-  createData("CLIENTE", "3211", "Potter Soluções LTDA", <TableActions />),
-  createData("MOTORISTA", "eneascarneiro", "Enéas Carneiro", <TableActions />),
-];
-
-export default function BasicTable() {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ boxShadow: 4 }}>
       <Table sx={{ minWidth: "60vw" }} aria-label="simple table">
-        <TableHead sx={{ backgroundColor: "transparent" }}>
+        <TableHead sx={{ backgroundColor: "background.default" }}>
           <TableRow>
-            <TableCell sx={{ minWidth: "20vw" }}>Tipo</TableCell>
-            <TableCell sx={{ minWidth: "20vw" }}>Usuário</TableCell>
-            <TableCell sx={{ minWidth: "20vw" }}>Nome do usuário</TableCell>
-            <TableCell sx={{ minWidth: "20vw" }}>Ações</TableCell>
+            {headers &&
+              headers.map((header) => (
+                <TableCell key={header.id} sx={{ minWidth: "20vw" }}>
+                  {header.title}
+                </TableCell>
+              ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell>{row.usuario}</TableCell>
-              <TableCell>{row.nomeUsuario}</TableCell>
-              <TableCell
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                {row.acao}
-                {/* <ArrowForwardIosIcon sx={{ width: 20, height: 20 }} /> */}
+          {tableItems.map(({ id, ...rest }) => (
+            <TableRow key={id}>
+              {Object.entries(rest).map(([key, value]) => (
+                <TableCell key={key}>{value.toString()}</TableCell>
+              ))}
+
+              <TableCell>
+                <TableActions />
               </TableCell>
             </TableRow>
           ))}
