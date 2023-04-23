@@ -31,7 +31,6 @@ export default function BasicTable({
       borderRadius: "20px",
       padding: "2px 1rem",
       minWidth: 92,
-      textAlign: "center",
     },
     processing: {
       backgroundColor: "#CBBEFD",
@@ -39,14 +38,12 @@ export default function BasicTable({
       borderRadius: "20px",
       padding: "2px 0.7rem",
       minWidth: 92,
-      textAlign: "center",
     },
     delivered: {
       backgroundColor: "#A9EAD8",
       color: "#20A17F",
       borderRadius: "20px",
       padding: "2px 1.4rem",
-      textAlign: "center",
     },
   };
 
@@ -97,6 +94,7 @@ export default function BasicTable({
                         key === "status" || key === "type"
                           ? "capitalize"
                           : "normal",
+                      textAlign: key === "status" ? "center" : "left",
                     }}
                     style={
                       key === "status" && value === "processando"
