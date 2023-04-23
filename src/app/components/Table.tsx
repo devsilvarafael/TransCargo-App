@@ -1,15 +1,55 @@
+/* eslint-disable no-nested-ternary */
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableContainer,
+  TableRow,
+  Paper,
+  Typography,
+} from "@mui/material";
+
+import DotIcon from "@mui/icons-material/MoreHoriz";
 import { IBasicTableProps, TableItem } from "../interfaces/Table";
 import TableActions from "./TableActions";
 
-export default function BasicTable({ headers, items }: IBasicTableProps) {
+export default function BasicTable({
+  headers,
+  items,
+  itemColor,
+  disableShadow,
+  disableGutters,
+  actions,
+}: IBasicTableProps) {
+  const haveStatusStyle = {
+    onway: {
+      backgroundColor: "#FFDD99",
+      color: "#CC7A00",
+      borderRadius: "20px",
+      padding: "2px 1rem",
+      minWidth: 92,
+      textAlign: "center",
+    },
+    processing: {
+      backgroundColor: "#CBBEFD",
+      color: "#644BC8",
+      borderRadius: "20px",
+      padding: "2px 0.7rem",
+      minWidth: 92,
+      textAlign: "center",
+    },
+    delivered: {
+      backgroundColor: "#A9EAD8",
+      color: "#20A17F",
+      borderRadius: "20px",
+      padding: "2px 1.4rem",
+      textAlign: "center",
+    },
+  };
+
   const tableItems: TableItem[] = items.map((item) => {
     const tableItem: TableItem = { id: item.id };
     Object.entries(item).forEach(([key, value]) => {
@@ -21,13 +61,20 @@ export default function BasicTable({ headers, items }: IBasicTableProps) {
   });
 
   return (
-    <TableContainer component={Paper} sx={{ boxShadow: 4 }}>
-      <Table sx={{ minWidth: "60vw" }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{ boxShadow: disableShadow ? 0 : 4 }}>
+      <Table aria-label="simple table">
         <TableHead sx={{ backgroundColor: "background.default" }}>
           <TableRow>
             {headers &&
               headers.map((header) => (
-                <TableCell key={header.id} sx={{ minWidth: "20vw" }}>
+                <TableCell
+                  key={header.id}
+                  sx={{
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                    color: "secondary.dark",
+                  }}
+                >
                   {header.title}
                 </TableCell>
               ))}
@@ -35,13 +82,39 @@ export default function BasicTable({ headers, items }: IBasicTableProps) {
         </TableHead>
         <TableBody>
           {tableItems.map(({ id, ...rest }) => (
-            <TableRow key={id}>
+            <TableRow key={id} sx={{ bgcolor: itemColor }}>
               {Object.entries(rest).map(([key, value]) => (
-                <TableCell key={key}>{value.toString()}</TableCell>
+                <TableCell
+                  key={key}
+                  sx={{ minWidth: disableGutters ? "9vw" : "20vw" }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: key === "status" ? "bold" : "normal",
+                      color: key === "document" ? "primary.dark" : "#000",
+                      textTransform:
+                        key === "status" || key === "type"
+                          ? "capitalize"
+                          : "normal",
+                    }}
+                    style={
+                      key === "status" && value === "processando"
+                        ? haveStatusStyle.processing
+                        : key === "status" && value === "na estrada"
+                        ? haveStatusStyle.onway
+                        : key === "status" && value === "entregue"
+                        ? haveStatusStyle.delivered
+                        : undefined
+                    }
+                  >
+                    {value.toString()}
+                  </Typography>
+                </TableCell>
               ))}
 
-              <TableCell>
-                <TableActions />
+              <TableCell sx={{ textAlign: "center" }}>
+                {actions === "icon" ? <DotIcon /> : <TableActions />}
               </TableCell>
             </TableRow>
           ))}
