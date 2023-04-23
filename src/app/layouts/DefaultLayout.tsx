@@ -27,6 +27,7 @@ interface DefaultLayoutProps {
   children: ReactNode;
   leftSideBar?: boolean;
   rightSideBar?: boolean;
+  disableGutters?: boolean;
 }
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -68,6 +69,7 @@ export default function DefaultLayout({
   children,
   leftSideBar,
   rightSideBar,
+  disableGutters,
 }: DefaultLayoutProps) {
   return (
     <Paper
@@ -85,14 +87,14 @@ export default function DefaultLayout({
           anchor="left"
           sx={{
             width: 200,
-            flexShrink: 0,
+            flexShrink: 1,
             "& .MuiDrawer-paper": {
-              width: 329,
+              width: "auto",
               boxSizing: "border-box",
               border: "none",
               boxShadow: 3,
             },
-            mr: 4,
+            mr: disableGutters ? 0 : 4,
           }}
         >
           <Box
@@ -107,7 +109,6 @@ export default function DefaultLayout({
             <Box
               sx={{
                 height: "100%",
-
                 display: "flex",
                 flexDirection: "column",
               }}
@@ -169,7 +170,8 @@ export default function DefaultLayout({
           width: "100%",
         }}
       >
-        <Box sx={{ ml: 16, mt: 8 }}>{children}</Box>
+        <Box sx={{ ml: disableGutters ? 0 : 4, mt: 2 }}>{children}</Box>
+
         {rightSideBar && (
           <Drawer
             variant="permanent"
@@ -199,4 +201,5 @@ export default function DefaultLayout({
 DefaultLayout.defaultProps = {
   leftSideBar: false,
   rightSideBar: false,
+  disableGutters: false,
 };
