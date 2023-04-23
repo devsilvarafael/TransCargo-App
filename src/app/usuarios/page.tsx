@@ -8,7 +8,6 @@ import Heading from "@/app/components/Heading";
 
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import BasicTable from "../components/Table";
 
@@ -43,18 +42,17 @@ const users = [
 export default function Usuarios(): JSX.Element {
   return (
     <DefaultLayout leftSideBar>
-      <Heading sx={{ color: "#505862" }} variant="h2">
+      <Heading sx={{ color: "#505862" }} variant="h4" fontWeight={600} mt={2}>
         Gerenciar - Usuários
       </Heading>
-      <Stack spacing={2} direction="row">
-        <Button
-          sx={{ marginTop: 6, marginBottom: 6, backgroundColor: "#644BC8" }}
-          startIcon={<PersonAddIcon />}
-          variant="contained"
-        >
-          Criar Usuário
-        </Button>
-      </Stack>
+      <Button
+        sx={{ marginTop: 6, marginBottom: 6, backgroundColor: "#644BC8" }}
+        startIcon={<PersonAddIcon />}
+        variant="contained"
+        size="small"
+      >
+        Criar Usuário
+      </Button>
       <BasicTable
         headers={[
           { title: "Tipo", id: 1 },
@@ -62,6 +60,7 @@ export default function Usuarios(): JSX.Element {
           { title: "Nome do Usuário", id: 3 },
           { title: "Ações", id: 4 },
         ]}
+        actions="button"
         items={users}
       />
     </DefaultLayout>

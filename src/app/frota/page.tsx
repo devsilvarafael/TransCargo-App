@@ -68,6 +68,7 @@ export default function Frota(): JSX.Element {
           { title: "Motorista", id: 3 },
           { title: "Ações", id: 4 },
         ]}
+        actions="button"
         items={truckData}
       />
     </DefaultLayout>
