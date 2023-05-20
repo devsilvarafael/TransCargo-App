@@ -8,6 +8,7 @@ import "@fontsource/inter";
 import "@/app/styles/globals.css";
 
 import UIThemeProvider from "@/app/components/UIThemeProvider";
+import QueryProvider from "@/app/components/QueryProvider";
 
 const inter: NextFont = Inter({
   weight: ["200", "300", "400", "500", "700"],
@@ -32,7 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body>
+      <QueryProvider>
         <UIThemeProvider>{children}</UIThemeProvider>
+      </QueryProvider>
       </body>
     </html>
   );
