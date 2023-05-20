@@ -1,8 +1,17 @@
 import express from "express";
-import routes from "./routes/routes";
+import cors from 'cors';
+
+import userRouter from "./routes/userRoutes";
 
 const app = express();
+const PORT = 8080;
 
-app.use(routes);
+app.use(express.json());
+app.use(cors());
 
-app.listen(3000);
+
+app.use('/api', userRouter);
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
+});
