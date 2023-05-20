@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import DotIcon from "@mui/icons-material/MoreHoriz";
+import axios from "axios";
 import { IBasicTableProps, TableItem } from "../interfaces/Table";
 import TableActions from "./TableActions";
 
@@ -56,6 +57,14 @@ export default function BasicTable({
     });
     return tableItem;
   });
+
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/users/${id}`);
+    } catch (err) {
+      console.log(err);
+    } 
+  }
 
   return (
     <TableContainer component={Paper} sx={{ boxShadow: disableShadow ? 0 : 4 }}>
@@ -112,7 +121,7 @@ export default function BasicTable({
               ))}
 
               <TableCell sx={{ textAlign: "center" }}>
-                {actions === "icon" ? <DotIcon /> : <TableActions />}
+                {actions === "icon" ? <DotIcon /> : <TableActions deleteData={() => handleDelete(id)}/>}
               </TableCell>
             </TableRow>
           ))}

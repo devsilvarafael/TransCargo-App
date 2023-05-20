@@ -5,9 +5,9 @@ export interface HeaderProps {
 
 export interface UserItems {
   id: number;
-  type: string;
-  user: string;
-  username: string;
+  role: string;
+  email: string;
+  name: string;
 }
 
 export interface TruckItems {
