@@ -4,17 +4,18 @@ import { Box, Button, Card, FormControl, TextField } from "@mui/material";
 import LoginContainer from "@/app/components/LoginContainer";
 import Image from "next/image";
 import Heading from "@/app/components/Heading";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import axios from "axios";
 
 interface LoginValuesProps {
-  email: null | string;
-  password: null | string;
+  email: string;
+  password: string;
 }
 
 export default function LoginForm() {
   const [formValue, setFormValue] = useState<LoginValuesProps>({
-    email: null,
-    password: null,
+    email: "",
+    password: "",
   });
 
   function loginFormValues(
@@ -24,6 +25,30 @@ export default function LoginForm() {
       ...formValue,
       [event.target.name]: event.target.value,
     });
+  }
+
+  async function signIn(event: FormEvent) {
+    event.preventDefault();
+
+    const { email, password } = formValue;
+
+    try {
+      const response = await axios.post("http://localhost:8080/api/login", {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        console.log("Logado");
+      }
+
+      setFormValue({
+        email: "",
+        password: "",
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -64,11 +89,17 @@ export default function LoginForm() {
               name="password"
               label="Senha"
               value={formValue.password}
+              onChange={(event) => loginFormValues(event)}
               fullWidth
             />
           </FormControl>
 
-          <Button variant="contained" sx={{ mt: 6, height: 50 }} fullWidth>
+          <Button
+            onClick={signIn}
+            variant="contained"
+            sx={{ mt: 6, height: 50 }}
+            fullWidth
+          >
             Login
           </Button>
         </Card>
