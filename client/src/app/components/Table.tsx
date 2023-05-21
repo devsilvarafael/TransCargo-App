@@ -63,8 +63,8 @@ export default function BasicTable({
       await axios.delete(`http://localhost:8080/api/users/${id}`);
     } catch (err) {
       console.log(err);
-    } 
-  }
+    }
+  };
 
   return (
     <TableContainer component={Paper} sx={{ boxShadow: disableShadow ? 0 : 4 }}>
@@ -121,7 +121,11 @@ export default function BasicTable({
               ))}
 
               <TableCell sx={{ textAlign: "center" }}>
-                {actions === "icon" ? <DotIcon /> : <TableActions deleteData={() => handleDelete(id)}/>}
+                {actions === "icon" ? (
+                  <DotIcon />
+                ) : (
+                  <TableActions deleteData={() => handleDelete(id)} />
+                )}
               </TableCell>
             </TableRow>
           ))}
