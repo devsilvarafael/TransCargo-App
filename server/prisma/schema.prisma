@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      String // Pode ser 'adm', 'driver' ou 'customer'
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Driver    Driver?
+  Customer  Customer?
+}
+
+model Driver {
+  userId Int    @unique
+  cnh    String
+  // Outros campos específicos para drivers
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Customer {
+  userId Int    @unique
+  cnpj   String
+  // Outros campos específicos para customers
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  DRIVER
+  CUSTOMER
+}
