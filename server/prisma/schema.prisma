@@ -2,42 +2,117 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["users", "drivers", "customers", "shipments", "routes", "trucks"]
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String
-  email     String    @unique
-  password  String
-  role      String // Pode ser 'adm', 'driver' ou 'customer'
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  role      Role // Pode ser 'adm', 'driver' ou 'customer'
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Driver    Driver?
   Customer  Customer?
+
+  @@map("users")
+  @@schema("users")
 }
 
 model Driver {
-  userId Int    @unique
-  cnh    String
-  // Outros campos específicos para drivers
+  id     String @id @default(uuid())
+  // Relations
   user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  // Complements
+  cnh      String @unique
+  birthday String
+  Truck    Truck?
+
+  @@map("drivers")
+  @@schema("drivers")
 }
 
 model Customer {
-  userId Int    @unique
-  cnpj   String
-  // Outros campos específicos para customers
+  id     String @id @default(uuid())
+  // Relations
   user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  Shipment Shipment[]
+
+  // Complements
+  cnpj    String @unique
+  address String
+
+  @@map("customers")
+  @@schema("customers")
+}
+
+model Truck {
+  id       String    @id @default(uuid())
+  // Relations
+  driver   Driver    @relation(fields: [driverId], references: [id])
+  driverId String    @unique
+  Shipment Shipment?
+
+  // Complements
+  capacity        String @unique
+  plate           String @unique
+  fabricationYear String
+  truckModel      String
+
+  @@map("trucks")
+  @@schema("trucks")
+}
+
+model Shipment {
+  id String @id @default(uuid())
+
+  // Relations
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+
+  truck   Truck   @relation(fields: [truckId], references: [id])
+  truckId String  @unique
+  Route   Route[]
+
+  // Complements
+  height Float
+  weight Float
+
+  @@map("shipments")
+  @@schema("shipments")
+}
+
+model Route {
+  id         String   @id @default(uuid())
+  shipment   Shipment @relation(fields: [shipmentId], references: [id])
+  shipmentId String
+
+  // Complements
+  origin         String
+  destiny        String
+  estimated_time String
+
+  @@map("routes")
+  @@schema("routes")
 }
 
 enum Role {
-  ADMIN
-  DRIVER
+  ADM
   CUSTOMER
+  DRIVER
+
+  @@schema("users")
 }

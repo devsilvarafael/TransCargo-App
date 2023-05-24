@@ -1,12 +1,9 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { validateCNPJ } from "../utils/validateCNPJ";
 
 const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
-
-
 
 export const getAllUsers = async (_req: Request, res: Response) => {
     try {
@@ -18,82 +15,76 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 }
 
 export const createUser = async (req: Request, res: Response) => {
-    const { name, email, role, password } = req.body;
-
-    const passwordHash = await bcrypt.hash(password, 10)
-
     try {
-        const user = await prisma.user.create({ data: { name, email, role, password: passwordHash } });
+        const { name, email, password, role } = req.body;
 
-        if(role === "driver") {
-            const { cnh } = req.body;
+        const passwordHash = await bcrypt.hash(password, 10)
 
-            await prisma.driver.create({
-                data: {
-                    cnh,
-                    user: {
-                        connect: {
-                            id: user.id,
-                        },
-                    },
-                },
-            });
-
-            console.log('Criou motorista')
-
-        }
-
-        if(role === "customer") {
-            const { cnpj } = req.body;
-
-            const isValid = validateCNPJ(cnpj);
-
-            if (!isValid) {
-                return res.status(400).json({ error: 'CNPJ inválido' });
+        const user = await prisma.user.create({
+            data: {
+                name,
+                email,
+                password: passwordHash,
+                role
             }
+        })
+
+        if (user.role === "CUSTOMER") {
+            const { cnpj, address } = req.body;
 
             await prisma.customer.create({
                 data: {
                     cnpj,
+                    address,
                     user: {
-                        connect: {
-                            id: user.id
-                        }
+                        connect: { id: user.id }
                     }
                 }
             })
+        }
 
+        if (user.role === "DRIVER") {
+            const { birthday, cnh } = req.body;
+
+            await prisma.driver.create({
+                data: {
+                    birthday,
+                    cnh,
+                    user: {
+                        connect: { id: user.id }
+                    }
+                }
+            })
         }
 
         res.status(201).json(user);
-    } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+    } catch (err) {
+        res.status(404).json({ message: "Dados inválidos" })
     }
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        // Excluir o registro de Driver associado ao usuário, se existir
         await prisma.driver.deleteMany({
             where: {
-                userId: Number(id),
+                userId: id,
             },
         });
 
-        // Excluir o registro de Customer associado ao usuário, se existir
         await prisma.customer.deleteMany({
             where: {
-                userId: Number(id),
+                userId: id,
             },
         });
 
         // Excluir o usuário
         await prisma.user.delete({
             where: {
-                id: Number(id),
+                id: id,
             },
         });
+
         res.json({ message: 'User deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
