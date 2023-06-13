@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import {validateCNPJ} from "../utils/validateCNPJ";
+import {verifyDocumentDuplication} from "../utils/verifyDocumentDuplication";
+import {documentValidator} from "../utils/documentValidator";
 
 const bcrypt = require("bcrypt");
 
@@ -36,14 +38,25 @@ export const createUser = async (req: Request, res: Response) => {
         if (role === "ADM") {
             const { document } = req.body;
 
-            await prisma.administrator.create({
-                data: {
-                    document,
-                    user: {
-                        create: userData
+            const validatedDocument = documentValidator(document);
+            const verifyDuplicatedDocument = verifyDocumentDuplication(document);
+
+            if(await verifyDuplicatedDocument) {
+                return res.status(400).json({ message: 'CPF já cadastrado no sistema.'})
+            }
+
+            if(validatedDocument) {
+                  await prisma.administrator.create({
+                    data: {
+                        document,
+                        user: {
+                            create: userData
+                        }
                     }
-                }
-            })
+                })
+            } else {
+                return res.status(401).json({ message: 'CPF inválido' })
+            }
         }
 
         if (role === "CUSTOMER") {
@@ -52,7 +65,7 @@ export const createUser = async (req: Request, res: Response) => {
             const validCNPJ = validateCNPJ(cnpj)
 
             if(validCNPJ) {
-                await prisma.customer.create({
+                 await prisma.customer.create({
                     data: {
                         cnpj,
                         address,
@@ -70,7 +83,7 @@ export const createUser = async (req: Request, res: Response) => {
         if (role === "DRIVER") {
             const { age, cnh } = req.body;
 
-            await prisma.driver.create({
+             await prisma.driver.create({
                 data: {
                     age,
                     cnh,
