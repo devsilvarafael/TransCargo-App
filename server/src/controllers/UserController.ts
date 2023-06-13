@@ -19,6 +19,10 @@ export const createUser = async (req: Request, res: Response) => {
     try {
         const { name, email, password, role } = req.body;
 
+        if (!['ADM', 'CUSTOMER', 'DRIVER'].includes(role)) {
+            return res.status(401).json({ message: 'Cargo inválido' })
+        }
+
         const passwordHash = await bcrypt.hash(password, 10)
 
         const userData = {
