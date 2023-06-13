@@ -14,8 +14,8 @@ datasource db {
 
 model User {
   id       String @id @default(uuid())
-  name     String
-  email    String @unique
+  name     String @db.VarChar(80)
+  email    String @unique @db.VarChar(240)
   password String
 
   role      Role // Pode ser 'adm', 'driver' ou 'customer'
@@ -33,7 +33,7 @@ model User {
 model Administrator {
   id String @id @default(uuid())
 
-  document String
+  document String @db.VarChar(20)
 
   // Relations
   user   User   @relation(fields: [userId], references: [id])
@@ -47,7 +47,7 @@ model Driver {
   id String @id @default(uuid())
 
   // Complements
-  cnh String @unique
+  cnh String @unique @db.VarChar(12)
   age Int
 
   // Relations
@@ -64,7 +64,7 @@ model Customer {
   id String @id @default(uuid())
 
   // Complements
-  cnpj    String @unique
+  cnpj    String @unique @db.VarChar(16)
   address String
 
   // Relations
@@ -82,9 +82,9 @@ model Truck {
 
   // Complements
   capacity        String @unique
-  plate           String @unique
+  plate           String @unique @db.VarChar(7)
   fabricationYear Int
-  truckModel      String
+  truckModel      String @db.VarChar(30)
 
   // Relations
   driver   Driver @relation(fields: [driverId], references: [id])
@@ -100,8 +100,8 @@ model Load {
   id Int @id @default(autoincrement())
 
   // Complements
-  origin      String
-  destination String
+  origin      String @db.VarChar(40)
+  destination String @db.VarChar(40)
   dimensions  String
   weight      Float
   status      Status
