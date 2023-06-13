@@ -40,7 +40,7 @@ export const deleteTruck = async (req: Request, res: Response) => {
     try {
         await prisma.truck.delete({
             where: {
-                id,
+                id: Number(id),
             },
         });
 

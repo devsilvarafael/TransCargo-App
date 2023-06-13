@@ -9,7 +9,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["users", "drivers", "customers", "shipments", "routes", "trucks"]
+  schemas  = ["users", "administrators", "drivers", "customers", "loads", "routes", "trucks"]
 }
 
 model User {
@@ -19,91 +19,116 @@ model User {
   password String
 
   role      Role // Pode ser 'adm', 'driver' ou 'customer'
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Driver    Driver?
-  Customer  Customer?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  driver        Driver?
+  customer      Customer?
+  administrator Administrator?
 
   @@map("users")
   @@schema("users")
 }
 
-model Driver {
-  id     String @id @default(uuid())
+model Administrator {
+  id String @id @default(uuid())
+
+  document String
+
   // Relations
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique
 
+  @@map("administrators")
+  @@schema("administrators")
+}
+
+model Driver {
+  id String @id @default(uuid())
+
   // Complements
-  cnh      String @unique
-  birthday String
-  Truck    Truck?
+  cnh String @unique
+  age Int
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  Truck Truck[] // A truck can have one or more Drivers
 
   @@map("drivers")
   @@schema("drivers")
 }
 
 model Customer {
-  id     String @id @default(uuid())
-  // Relations
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
-
-  Shipment Shipment[]
+  id String @id @default(uuid())
 
   // Complements
   cnpj    String @unique
   address String
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  load Load[]
 
   @@map("customers")
   @@schema("customers")
 }
 
 model Truck {
-  id       String    @id @default(uuid())
-  // Relations
-  driver   Driver    @relation(fields: [driverId], references: [id])
-  driverId String    @unique
-  Shipment Shipment?
+  id Int @id @default(autoincrement())
 
   // Complements
   capacity        String @unique
   plate           String @unique
-  fabricationYear String
+  fabricationYear Int
   truckModel      String
+
+  // Relations
+  driver   Driver @relation(fields: [driverId], references: [id])
+  driverId String
+
+  load Load[]
 
   @@map("trucks")
   @@schema("trucks")
 }
 
-model Shipment {
-  id String @id @default(uuid())
-
-  // Relations
-  customer   Customer @relation(fields: [customerId], references: [id])
-  customerId String
-
-  truck   Truck   @relation(fields: [truckId], references: [id])
-  truckId String  @unique
-  Route   Route[]
+model Load {
+  id Int @id @default(autoincrement())
 
   // Complements
-  height Float
-  weight Float
+  origin      String
+  destination String
+  dimensions  String
+  weight      Float
+  status      Status
 
-  @@map("shipments")
-  @@schema("shipments")
+  // Relations
+  customer   Customer @relation(fields: [customerId], references: [cnpj])
+  customerId String   @unique
+
+  truck   Truck @relation(fields: [truckId], references: [id])
+  truckId Int
+
+  route Route[]
+
+  @@map("loads")
+  @@schema("loads")
 }
 
 model Route {
-  id         String   @id @default(uuid())
-  shipment   Shipment @relation(fields: [shipmentId], references: [id])
-  shipmentId String
+  id Int @id @default(autoincrement())
 
   // Complements
-  origin         String
-  destiny        String
-  estimated_time String
+  stopPoints  String
+  arrivalTime DateTime
+
+  // Relationships
+  load   Load @relation(fields: [loadId], references: [id])
+  loadId Int
 
   @@map("routes")
   @@schema("routes")
@@ -115,4 +140,12 @@ enum Role {
   DRIVER
 
   @@schema("users")
+}
+
+enum Status {
+  PROCESSING
+  ONWAY
+  DELIVERED
+
+  @@schema("loads")
 }

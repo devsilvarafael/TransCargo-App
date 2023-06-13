@@ -29,6 +29,19 @@ export const createUser = async (req: Request, res: Response) => {
             }
         })
 
+        if (user.role === "ADM") {
+            const { document } = req.body;
+
+            await prisma.administrator.create({
+                data: {
+                    document,
+                    user: {
+                        connect: { id: user.id }
+                    }
+                }
+            })
+        }
+
         if (user.role === "CUSTOMER") {
             const { cnpj, address } = req.body;
 
@@ -44,11 +57,11 @@ export const createUser = async (req: Request, res: Response) => {
         }
 
         if (user.role === "DRIVER") {
-            const { birthday, cnh } = req.body;
+            const { age, cnh } = req.body;
 
             await prisma.driver.create({
                 data: {
-                    birthday,
+                    age,
                     cnh,
                     user: {
                         connect: { id: user.id }
@@ -59,13 +72,19 @@ export const createUser = async (req: Request, res: Response) => {
 
         res.status(201).json(user);
     } catch (err) {
-        res.status(404).json({ message: "Dados inválidos" })
+        return res.status(404).json({ message: "Ocorreu um problema ao criar o usuário." })
     }
 };
 
 export const deleteUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
+        await prisma.administrator.deleteMany({
+            where: {
+                userId: id
+            }
+        })
+
         await prisma.driver.deleteMany({
             where: {
                 userId: id,
@@ -87,6 +106,6 @@ export const deleteUser = async (req: Request, res: Response) => {
 
         res.json({ message: 'User deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
