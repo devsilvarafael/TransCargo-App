@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import {validateCNPJ} from "../utils/validateCNPJ";
 
 const bcrypt = require("bcrypt");
 
@@ -20,43 +21,49 @@ export const createUser = async (req: Request, res: Response) => {
 
         const passwordHash = await bcrypt.hash(password, 10)
 
-        const user = await prisma.user.create({
-            data: {
-                name,
-                email,
-                password: passwordHash,
-                role
-            }
-        })
+        const userData = {
+            name,
+            email,
+            password: passwordHash,
+            role
+        };
 
-        if (user.role === "ADM") {
+
+        if (role === "ADM") {
             const { document } = req.body;
 
             await prisma.administrator.create({
                 data: {
                     document,
                     user: {
-                        connect: { id: user.id }
+                        create: userData
                     }
                 }
             })
         }
 
-        if (user.role === "CUSTOMER") {
+        if (role === "CUSTOMER") {
             const { cnpj, address } = req.body;
 
-            await prisma.customer.create({
-                data: {
-                    cnpj,
-                    address,
-                    user: {
-                        connect: { id: user.id }
+            const validCNPJ = validateCNPJ(cnpj)
+
+            if(validCNPJ) {
+                await prisma.customer.create({
+                    data: {
+                        cnpj,
+                        address,
+                        user: {
+                            create: userData
+                        }
                     }
-                }
-            })
+                })
+            }
+
+
+            return res.status(401).json({ message: 'CNPJ invalido' })
         }
 
-        if (user.role === "DRIVER") {
+        if (role === "DRIVER") {
             const { age, cnh } = req.body;
 
             await prisma.driver.create({
@@ -64,13 +71,13 @@ export const createUser = async (req: Request, res: Response) => {
                     age,
                     cnh,
                     user: {
-                        connect: { id: user.id }
+                        create: userData
                     }
                 }
             })
         }
 
-        res.status(201).json(user);
+        res.status(201).json(userData);
     } catch (err) {
         return res.status(404).json({ message: "Ocorreu um problema ao criar o usuário." })
     }

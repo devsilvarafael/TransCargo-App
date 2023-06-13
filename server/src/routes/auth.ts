@@ -29,10 +29,9 @@ auth.post('/login', async (req, res) => {
 
         const token = jwt.sign({ userId: user.id }, '1010FFF')
 
-        res.json({ token });
+        return res.json({ token });
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: 'Internal server error'})
+        return res.status(500).json({ message: 'Internal server error'})
     }
 })
 
