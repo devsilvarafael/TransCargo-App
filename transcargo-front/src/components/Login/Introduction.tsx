@@ -11,7 +11,7 @@ export function Introduction() {
     <Intro>
       <IntroHeader>
         <SVGlogo />
-        <p>Astra</p>
+        <p>Sumiu</p>
       </IntroHeader>
       <IntroMain>
         <img src={SVGdraw} alt="" />

@@ -84,14 +84,8 @@ const handleClose = () => {
 
                     CANCELAR
                   </Button>
-
 </ModalConfirmAndCancel>
-                
-
-                
                 </div>
-
-              
               </Stack>
             </form>
           </ModalDialog>

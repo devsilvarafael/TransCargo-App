@@ -3,7 +3,7 @@ import {
   IntroHeader,
   FormContainer,
   FormInputs,
-  IntroContainer,
+  Ground,
   IntroTitle,
 } from "./login.module.tsx";
 import SVGdraw from "../../assets/Logo.svg";
@@ -38,6 +38,7 @@ export function SignIn() {
 
 
   return (
+      <Ground>
     <Intro>
       <IntroTitle>
       <h1>Login</h1>
@@ -56,5 +57,6 @@ export function SignIn() {
       </FormContainer>
       </IntroTitle>
     </Intro>
+      </Ground>
   );
 }

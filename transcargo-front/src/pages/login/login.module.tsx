@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+const Ground = styled.div`
+
+  background: linear-gradient(to bottom, #b0adad, #da13da);
+  background-size: 100% 100%;
+`;
+
+
+
 const Intro = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -153,4 +161,5 @@ export {
   FormInputs,
   IntroContainer,
   IntroTitle,
+  Ground,
 };

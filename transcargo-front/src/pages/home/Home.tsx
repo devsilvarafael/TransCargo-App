@@ -2,23 +2,8 @@
 import { ContainerPage } from "../../layouts/DefaultLayout/ContainerPage.tsx";
 import { TitlePage } from "../../layouts/DefaultLayout/TitlePage.tsx";
 import imagem from "../../assets/caminhao.jpg";
-import styled from "styled-components";
 import { Card } from "@mui/material";
-import { PequisarInput, dicCardCollumn, StyledH1, CardsContainer } from "./home.module.tsx";
-
-const Container = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  height: 100%;
-  margin-top: 10px;
- 
-
-`;
-
-const StyledImage = styled.img`
-   
-`;
+import { PequisarInput, StyledImage, InputStyled, StyledH1, CardsContainer, InputCartStyledH2, InputCartStyledH4 } from "./home.module.tsx";
 
 export function Home() {
   return (
@@ -29,28 +14,32 @@ export function Home() {
         </StyledH1>
       </TitlePage>
       <hr />
-
       <PequisarInput>
         <div>
           <h1>
             Rotas
           </h1>
-          <input type="text" placeholder="Pesquisar" />
+          <InputStyled
+            placeholder="Pesquisar" >
+          </InputStyled>
           <CardsContainer>
-
             <Card>
-              <h2>
-  ENTREGA
-              </h2>
-              <span>90</span>
+              <InputCartStyledH4>
+                N° Conhecimento
+                <InputCartStyledH2>
+                DF-145009SC
+              </InputCartStyledH2>
+              </InputCartStyledH4>
+              <hr />
+
+              
             </Card>
-
           </CardsContainer>
-          <hr/>
+          <hr />
           <div>
-              <StyledImage src={imagem} alt="Descrição da imagem" />
+            <StyledImage src={imagem} alt="Descrição da imagem" />
 
-            </div>
+          </div>
 
         </div>
 

@@ -10,7 +10,7 @@ import Add from "@mui/icons-material/Add";
 import Typography from "@mui/joy/Typography";
 import { ModalUserContainer } from "./ModalUserCreate.module";
 import { ModalConfirmAndCancel } from "./ModalSelectUser.module";
-import axios from "axios";
+
 export function ModalDialogCliente() {
   const [open, setOpen] = React.useState<boolean>(false);
 

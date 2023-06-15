@@ -31,7 +31,7 @@ export function Sidebar() {
           <Link to="/charge" style={{ textDecoration: "none" }}>
             <li>
               <LocalShippingIcon className="icon" />
-              <span>Rotas</span>
+              <span>Cargas</span>
             </li>
           </Link>
          
