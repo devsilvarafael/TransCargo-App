@@ -1,16 +1,13 @@
 import {
   Intro,
-  IntroHeader,
   FormContainer,
   FormInputs,
   Ground,
   IntroTitle,
 } from "./login.module.tsx";
 import SVGdraw from "../../assets/Logo.svg";
-
 import { Link } from 'react-router-dom';
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useQuery } from "react-query";
 import axios from "axios";
 
 export function SignIn() {

@@ -2,7 +2,7 @@
 import { ContainerPage } from "../../layouts/DefaultLayout/ContainerPage.tsx";
 import { TitlePage } from "../../layouts/DefaultLayout/TitlePage.tsx";
 import imagem from "../../assets/caminhao.jpg";
-import { Button, Card } from "@mui/material";
+import {  Card } from "@mui/material";
 import { PequisarInput, StyledImage, InputStyled, StyledH1, CardsContainer, InputCartStyledH2, InputCartStyledH4 } from "./home.module.tsx";
 import CallMissedOutgoingIcon from '@mui/icons-material/CallMissedOutgoing';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';

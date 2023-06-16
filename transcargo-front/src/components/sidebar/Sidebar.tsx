@@ -8,7 +8,6 @@ import SVGdraw from "../../assets/Logo.svg";
 import HomeIcon from '@mui/icons-material/Home';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-
 import EditIcon from '@mui/icons-material/Edit';
 
 export function Sidebar() {

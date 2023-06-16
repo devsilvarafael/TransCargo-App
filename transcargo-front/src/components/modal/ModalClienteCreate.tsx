@@ -17,43 +17,9 @@ export function ModalDialogCliente() {
   const handleClose = () => {
     setOpen(false);
 
-    const handleSubmitCliente = async () => {
-      // Dados do formulário
-      const formData = {
-        name: String,
-        email: String,
-        password: String,
-        role: String,
-        cnpj: Number,
-        address: String
-        // outros campos
-      };
-  
-      try {
-        // Enviar a requisição para o backend
-        const response = await fetch("URL_DO_BACKEND", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-  
-        // Verificar a resposta do backend
-        if (response.ok) {
-          
-          const responseData = await response.json();
-          console.log(responseData);
-          // Tratar a resposta do backend conforme necessário
-        } else {
-         console.error("Erro ao tentar criar o usuario ");
-        
-        }
-      } catch (error) {
-        console.error("Erro inesperado ao tentar criar o usuario");
-      }
-    };
   };
+  
+    
   return (
     <ModalUserContainer>
       <React.Fragment>
@@ -137,4 +103,4 @@ export function ModalDialogCliente() {
       </React.Fragment>
     </ModalUserContainer>
   );
-}
+              }
