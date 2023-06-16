@@ -7,8 +7,8 @@ import {
 } from "./login.module.tsx";
 import SVGdraw from "../../assets/Logo.svg";
 import { Link } from 'react-router-dom';
-import { ChangeEvent, FormEvent, useState } from "react";
-import axios from "axios";
+import { ChangeEvent, useState } from "react";
+
 
 export function SignIn() {
 
@@ -27,11 +27,6 @@ export function SignIn() {
   }
 
 
-  const signInUser = (event: FormEvent) => {
-    axios.post("http://localhost:8080/api/login", userData).then(res => {
-      console.log(res.data)
-    })
-  }
 
 
   return (
@@ -48,7 +43,7 @@ export function SignIn() {
       
          
           <Link to="/home" style={{ textDecoration: "none" }}>
-            <button type="submit" onClick={signInUser}>Entrar</button>
+            <button type="submit" >Entrar</button>
            </Link>
         </FormInputs>
       </FormContainer>
