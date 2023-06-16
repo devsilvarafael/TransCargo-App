@@ -1,7 +1,8 @@
 import { ContainerPage } from "../../layouts/DefaultLayout/ContainerPage";
 import { TitlePage } from "../../layouts/DefaultLayout/TitlePage";
 import DataTableUser from "../../components/table/DataTableUser";
-import {StyledH1} from  "./user.module.tsx";
+import { StyledH1 } from "./User.module";
+
 
 export function User() {
   
